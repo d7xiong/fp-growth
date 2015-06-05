@@ -1,0 +1,10 @@
+/target
+/bin
+/etc
+/logs
+*.bat
+*.git
+*.logs
+*.project
+*.classpath
+*.settings
