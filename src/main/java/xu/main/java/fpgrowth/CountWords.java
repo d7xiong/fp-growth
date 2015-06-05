@@ -35,43 +35,7 @@ public class CountWords {
 		sortWords();
 	}
 
-	public void printWords() {
-		System.out.println("========== words start ==========");
-		for (String word : words) {
-			System.out.println(word);
-		}
-		System.out.println("========== words  end  ==========");
-	}
-
-	public void printWordsFreqs() {
-		System.out.println("========== wordsFreqs start ==========");
-		for (int freq : wordsFreqs) {
-			System.out.println(freq);
-		}
-		System.out.println("========== wordsFreqa  end  ==========");
-	}
-
-	public void printWordsAndFreqs() {
-		System.out.println("========== wordsAndFreqs start ==========");
-		for (int wordsIndex = 0, len = words.length; wordsIndex < len; wordsIndex++) {
-			System.out.print(words[wordsIndex]);
-			System.out.print("\t");
-			System.out.println(wordsFreqs[wordsIndex]);
-		}
-		System.out.println("========== wordsAndFreqs  end  ==========");
-	}
-
-	public void printDataList() {
-		System.out.println("========== dataList start ==========");
-		for (List<String> rowDataList : dataList) {
-			for (String item : rowDataList) {
-				System.out.print(item);
-				System.out.print("\t");
-			}
-			System.out.println();
-		}
-		System.out.println("========== dataList  end ==========");
-	}
+	
 
 	/**
 	 * 统计出现频率
@@ -134,24 +98,42 @@ public class CountWords {
 			words[currentIndex] = insertStr;
 		}
 	}
-
-	public void insertSort(int[] array) {
-		// printArray(array);
-		int insertNum;
-		for (int index = 1; index < array.length; index++) {
-			int currentIndex = index;
-			insertNum = array[index];
-			for (; currentIndex > 0 && array[currentIndex - 1] < insertNum; currentIndex--) {
-				array[currentIndex] = array[currentIndex - 1];
-			}
-			// while(currentIndex > 0 && array[currentIndex - 1] < insertNum){
-			// array[currentIndex] = array[currentIndex - 1];
-			// currentIndex--;
-			// }
-			array[currentIndex] = insertNum;
-
-			// printArray(array);
+	public void printWords() {
+		System.out.println("========== words start ==========");
+		for (String word : words) {
+			System.out.println(word);
 		}
+		System.out.println("========== words  end  ==========");
+	}
+
+	public void printWordsFreqs() {
+		System.out.println("========== wordsFreqs start ==========");
+		for (int freq : wordsFreqs) {
+			System.out.println(freq);
+		}
+		System.out.println("========== wordsFreqa  end  ==========");
+	}
+
+	public void printWordsAndFreqs() {
+		System.out.println("========== wordsAndFreqs start ==========");
+		for (int wordsIndex = 0, len = words.length; wordsIndex < len; wordsIndex++) {
+			System.out.print(words[wordsIndex]);
+			System.out.print("\t");
+			System.out.println(wordsFreqs[wordsIndex]);
+		}
+		System.out.println("========== wordsAndFreqs  end  ==========");
+	}
+
+	public void printDataList() {
+		System.out.println("========== dataList start ==========");
+		for (List<String> rowDataList : dataList) {
+			for (String item : rowDataList) {
+				System.out.print(item);
+				System.out.print("\t");
+			}
+			System.out.println();
+		}
+		System.out.println("========== dataList  end ==========");
 	}
 
 	public void printArray(int[] array) {
