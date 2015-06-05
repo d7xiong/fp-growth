@@ -63,7 +63,6 @@ public class DataResort {
     }
 
     private void sortWords(String[] words, int[] wordsFreq, int wordsNum){
-//        printArray(wordsFreq);
         int insertNum;
         String insertStr;
         int[] array = wordsFreq;
@@ -78,16 +77,7 @@ public class DataResort {
             }
             array[currentIndex] = insertNum;
             words[currentIndex] = insertStr;
-
-//            printArray(wordsFreq);
         }
-    }
-
-    public void printArray(int[] array){
-        for(int item : array){
-            System.out.print(item);
-        }
-        System.out.println();
     }
 
     /* 最小支持度 */
