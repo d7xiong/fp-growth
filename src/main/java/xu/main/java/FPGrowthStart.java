@@ -6,14 +6,13 @@ import java.util.Map;
 import xu.main.java.fpgrowth.CountWords;
 import xu.main.java.fpgrowth.DataResort;
 import xu.main.java.fpgrowth.FPGrowth;
-import xu.main.java.fpgrowth.TreeNode;
 
 /**
  * Created by xu on 15-6-5.
  */
 public class FPGrowthStart {
 
-	public static void main(String args[]) {
+	public static void main(String[] args) {
 		CountWords countWords = new CountWords();
 		countWords.initData();
 
