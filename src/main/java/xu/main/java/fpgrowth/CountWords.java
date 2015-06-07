@@ -14,13 +14,6 @@ import java.util.Set;
  */
 public class CountWords {
 
-	public static void main(String args[]) {
-		CountWords fpGrowth = new CountWords();
-		fpGrowth.initData();
-		// fpGrowth.printResult();
-
-	}
-
 	public CountWords() {
 		this.dataList = createDefaultData();
 	}
@@ -30,17 +23,15 @@ public class CountWords {
 	}
 
 	public void initData() {
-		this.wordsFreqsMap = countWordFreq();
-		setWords(wordsFreqsMap);
+		countWordFreq();
+		setWords();
 		sortWords();
 	}
-
-	
 
 	/**
 	 * 统计出现频率
 	 */
-	private Map<String, Integer> countWordFreq() {
+	private void countWordFreq() {
 
 		Map<String, Integer> wordsMap = new HashMap<>();
 		for (List<String> rowDataList : this.dataList) {
@@ -51,7 +42,7 @@ public class CountWords {
 
 			}
 		}
-		return wordsMap;
+		this.wordsFreqsMap = wordsMap;
 	}
 
 	/**
@@ -59,15 +50,15 @@ public class CountWords {
 	 * 
 	 * @param wordsFreqMap
 	 */
-	private void setWords(Map<String, Integer> wordsFreqMap) {
-		int wordsNum = wordsFreqMap.size();
+	private void setWords() {
+		int wordsNum = wordsFreqsMap.size();
 		this.wordsNum = wordsNum;
 		this.words = new String[wordsNum];
 		this.wordsFreqs = new int[wordsNum];
 		this.wordsSet = new HashSet<>();
 
 		int wordIndex = 0;
-		Set<Map.Entry<String, Integer>> wordsFreqSet = wordsFreqMap.entrySet();
+		Set<Map.Entry<String, Integer>> wordsFreqSet = wordsFreqsMap.entrySet();
 		for (Iterator<Map.Entry<String, Integer>> it = wordsFreqSet.iterator(); it.hasNext();) {
 			Map.Entry<String, Integer> entry = it.next();
 			this.words[wordIndex] = entry.getKey();
@@ -98,6 +89,7 @@ public class CountWords {
 			words[currentIndex] = insertStr;
 		}
 	}
+
 	public void printWords() {
 		System.out.println("========== words start ==========");
 		for (String word : words) {

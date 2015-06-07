@@ -1,4 +1,4 @@
-package xu.main.java.fpgrowth;
+package xu.main.java.fpgrowth.vo;
 
 import java.util.List;
 

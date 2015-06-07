@@ -1,7 +1,14 @@
 package xu.main.java.fpgrowth;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import xu.main.java.fpgrowth.vo.ConditionalModel;
+import xu.main.java.fpgrowth.vo.TreeNode;
 
 public class FPGrowth {
 
@@ -21,6 +28,59 @@ public class FPGrowth {
 		}
 	}
 
+	public void addData(List<List<String>> dataList) {
+		for (List<String> rowDataList : dataList) {
+			String[] dataArray = new String[rowDataList.size()];
+			for (int rowIndex = 0, len = rowDataList.size(); rowIndex < len; rowIndex++) {
+				dataArray[rowIndex] = rowDataList.get(rowIndex);
+			}
+			this.addData(dataArray);
+		}
+	}
+
+	public void buildConditionalModel() {
+		this.conditionalModelMap = new HashMap<>();
+		for (int wordsIndex = words.length - 1; wordsIndex >= 0; wordsIndex--) {
+			// 过滤小于最小置信度的数据
+			int wordsFreq = wordsFreqs[wordsIndex];
+			if (minSup >= wordsFreq) {
+				continue;
+			}
+			String key = words[wordsIndex];
+			TreeNode keyNode = wordsTreeNode[wordsIndex];
+			buildKeyConditionalModel(key, keyNode);
+		}
+	}
+
+	private void buildKeyConditionalModel(String key, TreeNode dataFirstTreeNode) {
+		TreeNode currentNode = dataFirstTreeNode;
+		List<ConditionalModel> modelList = new ArrayList<>();
+		while (null != currentNode) {
+			List<String> valueList = new ArrayList<>();
+			findConditionalValue(currentNode, valueList);
+			if (0 == valueList.size()) {
+				currentNode = currentNode.getNextHomonym();
+				continue;
+			}
+			ConditionalModel conditionalModel = new ConditionalModel();
+			conditionalModel.setKey(key);
+			conditionalModel.setValueList(valueList);
+			conditionalModel.setValueFreq(currentNode.getCount());
+			modelList.add(conditionalModel);
+			currentNode = currentNode.getNextHomonym();
+		}
+		this.conditionalModelMap.put(key, modelList);
+	}
+
+	private void findConditionalValue(TreeNode treeNode, List<String> valueList) {
+		TreeNode parentNode = treeNode.getParentNode();
+		if (FP_TREE_ROOT_NODE_NAME.equals(parentNode.getNodeName())) {
+			return;
+		}
+		findConditionalValue(parentNode, valueList);
+		valueList.add(parentNode.getNodeName());
+	}
+
 	private TreeNode addDataToFpTree(String data, TreeNode currentNode) {
 		if (currentNode.isChildrenNull()) {
 			List<TreeNode> children = new ArrayList<>();
@@ -37,7 +97,7 @@ public class FPGrowth {
 		currentNode.getChildren().add(childNode);
 		int wordsTreeNodeIndex = findWordsTreeNodeIndexByNodeName(data);
 		TreeNode rootHomonymNode = wordsTreeNode[wordsTreeNodeIndex];
-		if(null == rootHomonymNode){
+		if (null == rootHomonymNode) {
 			wordsTreeNode[wordsTreeNodeIndex] = childNode;
 			return childNode;
 		}
@@ -89,6 +149,19 @@ public class FPGrowth {
 		this.wordsTreeNode = new TreeNode[wordsTreeNodeLength];
 	}
 
+	public void printConditionalModel() {
+		System.out.println("========== ConditionalModel start ==========");
+		Iterator<Entry<String, List<ConditionalModel>>> it = conditionalModelMap.entrySet().iterator();
+		while (it.hasNext()) {
+			Entry<String, List<ConditionalModel>> entry = it.next();
+			for (ConditionalModel conditionalModel : entry.getValue()) {
+				System.out.println(conditionalModel);
+			}
+		}
+
+		System.out.println("========== ConditionalModel  end  ==========");
+	}
+
 	public void printFpTree() {
 		System.out.println("========== FP-Tree start ==========");
 		printNodes(this.rootNode, 1);
@@ -113,6 +186,10 @@ public class FPGrowth {
 		return rootNode;
 	}
 
+	public Map<String, List<ConditionalModel>> getConditionalModelMap() {
+		return conditionalModelMap;
+	}
+
 	private final String FP_TREE_ROOT_NODE_NAME = "ROOT_NODE";
 
 	private int minSup;
@@ -124,5 +201,8 @@ public class FPGrowth {
 	private TreeNode[] wordsTreeNode;
 
 	private TreeNode rootNode;
+
+	/* 条件模式基 */
+	private Map<String, List<ConditionalModel>> conditionalModelMap;
 
 }
